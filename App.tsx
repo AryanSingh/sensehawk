@@ -6,30 +6,46 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
 // @ts-ignore
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
-
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Home from './src/components/home/home.tsx';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import Restaurant from './src/components/Restaurant/Restaurant.tsx';
 import Cart from './src/components/Cart/Cart.tsx';
+import LoginScreen from './src/components/Login/LoginScreen.js';
+import RegisterScreen from './src/components/Login/RegistrationScreen.js';
 
 const Stack = createNativeStackNavigator();
 
+const Auth = () => {
+  // Stack Navigator for Login and Sign up Screen
+  return (
+    <Stack.Navigator initialRouteName="LoginScreen">
+      <Stack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="RegisterScreen"
+        component={RegisterScreen}
+        options={{
+          title: 'Register', //Set Header Title
+          headerStyle: {
+            backgroundColor: '#307ecc', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -43,13 +59,15 @@ function App(): React.JSX.Element {
       }
     });
   }, [loading]);
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Auth">
+        <Stack.Screen
+          name="Auth"
+          component={Auth}
+          options={{headerShown: false}}
+        />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Restaurant" component={Restaurant} />
         <Stack.Screen name="Cart" component={Cart} />
@@ -57,24 +75,5 @@ function App(): React.JSX.Element {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;

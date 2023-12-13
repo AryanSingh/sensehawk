@@ -66,19 +66,17 @@ const Restaurant = ({route, navigation}) => {
     });
   };
   return (
-    <ScrollView>
-      <View style={Styles.mainContainerStyle}>
-        {renderMenu()}
-        <View style={Styles.floatingMenuButtonStyle}>
-          <IconButton
-            icon="cart"
-            size={30}
-            mode="contained"
-            onPress={() => navigation.navigate('Cart')}></IconButton>
-          {count ? <Badge style={Styles.badge}>{count}</Badge> : null}
-        </View>
+    <View style={Styles.mainContainerStyle}>
+      <ScrollView>{renderMenu()}</ScrollView>
+      <View style={Styles.floatingMenuButtonStyle}>
+        <IconButton
+          icon="cart"
+          size={30}
+          mode="contained"
+          onPress={() => navigation.navigate('Cart')}></IconButton>
+        {count ? <Badge style={Styles.badge}>{count}</Badge> : null}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
