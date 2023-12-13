@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "819234253300",
+    "project_id": "seahawk-84347",
+    "storage_bucket": "seahawk-84347.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819234253300:android:53dd61d4e937ad7bb171a1",
+        "android_client_info": {
+          "package_name": "com.awesomeproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIcFnJAlBedi1fQc9sv87ShJAGQg4idJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
