@@ -2,21 +2,13 @@ import * as React from 'react';
 import {Avatar, Button, Card, Text} from 'react-native-paper';
 import {restaurantList} from '../../data.ts';
 import {View} from 'react-native';
+import BottomNavigationBar from '../BottomNavigation/BottomNavigationBar.tsx';
 
 // @ts-ignore
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
 
 // @ts-ignore
 const Home = ({navigation}) => {
-  // export interface IRestaurant {
-  //   id: number;
-  //   name: string;
-  //   address: string;
-  //   phone: string;
-  //   rating: number;
-  //   distance: number;
-  //   foodList: number[];
-  // }
   const renderRestaurantList = () => {
     return restaurantList.map(restaurant => {
       return (
@@ -39,16 +31,16 @@ const Home = ({navigation}) => {
             <Text variant="bodyMedium">Distance: {restaurant.distance}</Text>
             <Text variant="bodyMedium">Rating: {restaurant.rating}</Text>
           </Card.Content>
-          {/*<Card.Cover source={{uri: 'https://picsum.photos/700'}} />*/}
-          {/*<Card.Actions>*/}
-          {/*  <Button>Remove</Button>*/}
-          {/*  <Button>Add</Button>*/}
-          {/*</Card.Actions>*/}
         </Card>
       );
     });
   };
-  return <View>{renderRestaurantList()}</View>;
+  return (
+    <View>
+      {renderRestaurantList()}
+      {/*<BottomNavigationBar />*/}
+    </View>
+  );
 };
 
 export default Home;

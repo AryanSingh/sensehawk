@@ -24,6 +24,7 @@ import Home from './src/components/home/home.tsx';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import Restaurant from './src/components/Restaurant/Restaurant.tsx';
+import Cart from './src/components/Cart/Cart.tsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +52,7 @@ function App(): React.JSX.Element {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Restaurant" component={Restaurant} />
+        <Stack.Screen name="Cart" component={Cart} />
       </Stack.Navigator>
     </NavigationContainer>
   );

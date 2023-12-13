@@ -21,6 +21,8 @@ export interface ICartItem {
   count: number;
 }
 
+export interface ICheckoutItem extends ICartItem, IFoodItem {}
+
 export interface ICart {
   restaurantId: number;
   foodList: ICartItem[];
