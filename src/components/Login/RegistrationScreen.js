@@ -44,7 +44,7 @@ const RegisterScreen = ({navigation}) => {
               displayName: userName,
               photoURL: 'https://aboutreact.com/profile.png',
             })
-            .then(() => navigation.replace('Home'))
+            .then(() => navigation.replace('Restaurants'))
             .catch(error => {
               alert(error);
               console.error(error);
@@ -127,22 +127,6 @@ const RegisterScreen = ({navigation}) => {
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </ScrollView>
-      <Text
-        style={{
-          fontSize: 18,
-          textAlign: 'center',
-          color: 'white',
-        }}>
-        React Native Firebase Authentication
-      </Text>
-      <Text
-        style={{
-          fontSize: 16,
-          textAlign: 'center',
-          color: 'white',
-        }}>
-        www.aboutreact.com
-      </Text>
     </SafeAreaView>
   );
 };

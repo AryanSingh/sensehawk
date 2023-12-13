@@ -20,11 +20,7 @@ const MenuItem = props => {
     <Card
       // onPress={() => navigation.navigate('Restaurant')}
       key={menuItem.id}>
-      <Card.Title
-        title={menuItem.name}
-        subtitle="Card Subtitle"
-        left={LeftContent}
-      />
+      <Card.Title title={menuItem.name} subtitle="" left={LeftContent} />
       <Card.Content>
         <Text variant="titleLarge">{menuItem.name}</Text>
         <Text variant="bodyMedium">Price: {menuItem.price}</Text>

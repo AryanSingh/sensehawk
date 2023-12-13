@@ -8,6 +8,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store.tsx';
 import {useEffect} from 'react';
 import {clearCart} from '../Cart/cartSlice.tsx';
+import {Searchbar} from 'react-native-paper';
+
 const Styles = StyleSheet.create({
   mainContainerStyle: {
     flexDirection: 'column',
@@ -40,6 +42,9 @@ const Restaurant = ({route, navigation}) => {
   const cartRestaurantId = useSelector(
     (state: RootState) => state.restaurantId,
   );
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const onChangeSearch = (query: string) => setSearchQuery(query);
 
   useEffect(() => {
     if (restaurant) {
@@ -67,6 +72,11 @@ const Restaurant = ({route, navigation}) => {
   };
   return (
     <View style={Styles.mainContainerStyle}>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+      />
       <ScrollView>{renderMenu()}</ScrollView>
       <View style={Styles.floatingMenuButtonStyle}>
         <IconButton

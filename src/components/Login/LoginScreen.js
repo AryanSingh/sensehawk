@@ -40,7 +40,7 @@ const LoginScreen = ({navigation}) => {
       .then(user => {
         console.log(user);
         // If server response message same as Data Matched
-        if (user) navigation.replace('Home');
+        if (user) navigation.replace('Restaurants');
       })
       .catch(error => {
         console.log(error);
@@ -113,22 +113,6 @@ const LoginScreen = ({navigation}) => {
           </KeyboardAvoidingView>
         </View>
       </ScrollView>
-      <Text
-        style={{
-          fontSize: 18,
-          textAlign: 'center',
-          color: 'white',
-        }}>
-        React Native Firebase Authentication
-      </Text>
-      <Text
-        style={{
-          fontSize: 16,
-          textAlign: 'center',
-          color: 'white',
-        }}>
-        www.aboutreact.com
-      </Text>
     </SafeAreaView>
   );
 };

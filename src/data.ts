@@ -3,8 +3,8 @@ import {IFoodItem, IRestaurant} from './data.interface';
 export const restaurantList: IRestaurant[] = [
   {
     id: 1,
-    name: 'Restaurant 1',
-    address: 'Address 1',
+    name: 'Truffles',
+    address: 'Koramangala',
     phone: 'Phone 1',
     rating: 4,
     distance: 1.2,
@@ -12,8 +12,8 @@ export const restaurantList: IRestaurant[] = [
   },
   {
     id: 2,
-    name: 'Restaurant 2',
-    address: 'Address 2',
+    name: 'Punjab grill',
+    address: 'Indiranagar',
     phone: 'Phone 2',
     rating: 3,
     distance: 2.2,
@@ -21,8 +21,8 @@ export const restaurantList: IRestaurant[] = [
   },
   {
     id: 3,
-    name: 'Restaurant 3',
-    address: 'Address 3',
+    name: 'Boho',
+    address: 'Brookefield',
     phone: 'Phone 3',
     rating: 5,
     distance: 3.2,
@@ -30,8 +30,8 @@ export const restaurantList: IRestaurant[] = [
   },
   {
     id: 4,
-    name: 'Restaurant 4',
-    address: 'Address 4',
+    name: 'Rameshwaram Cafe',
+    address: 'Whitefield',
     phone: 'Phone 4',
     rating: 2,
     distance: 4.2,
@@ -39,8 +39,8 @@ export const restaurantList: IRestaurant[] = [
   },
   {
     id: 5,
-    name: 'Restaurant 5',
-    address: 'Address 5',
+    name: 'Cafe Siri',
+    address: 'Brookefield',
     phone: 'Phone 5',
     rating: 1,
     distance: 5.2,

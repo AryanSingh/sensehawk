@@ -4,8 +4,9 @@
  *
  * @format
  */
-
-import React, {useEffect, useState} from 'react';
+import 'react-native-gesture-handler';
+import {Drawer} from 'react-native-paper';
+import React, {useEffect, useState, useMemo} from 'react';
 // @ts-ignore
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import Home from './src/components/home/home.tsx';
@@ -15,8 +16,10 @@ import Restaurant from './src/components/Restaurant/Restaurant.tsx';
 import Cart from './src/components/Cart/Cart.tsx';
 import LoginScreen from './src/components/Login/LoginScreen.js';
 import RegisterScreen from './src/components/Login/RegistrationScreen.js';
+// import {createDrawerNavigator} from '@react-navigation/drawer';
 
 const Stack = createNativeStackNavigator();
+// const Drawer = createDrawerNavigator();
 
 const Auth = () => {
   // Stack Navigator for Login and Sign up Screen
@@ -45,6 +48,25 @@ const Auth = () => {
   );
 };
 
+const DrawerSection = () => {
+  const [active, setActive] = React.useState('');
+
+  return (
+    <Drawer.Section title="Some title">
+      <Drawer.Item
+        label="First Item"
+        active={active === 'first'}
+        onPress={() => setActive('first')}
+      />
+      <Drawer.Item
+        label="Second Item"
+        active={active === 'second'}
+        onPress={() => setActive('second')}
+      />
+    </Drawer.Section>
+  );
+};
+
 function App(): React.JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
@@ -62,14 +84,20 @@ function App(): React.JSX.Element {
 
   return (
     <NavigationContainer>
+      {/*<Drawer.CollapsedItem*/}
+      {/*  focusedIcon="inbox"*/}
+      {/*  unfocusedIcon="inbox-outline"*/}
+      {/*  label="Inbox"*/}
+      {/*/>*/}
+      {/*<DrawerSection />*/}
       <Stack.Navigator initialRouteName="Auth">
         <Stack.Screen
           name="Auth"
           component={Auth}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Restaurant" component={Restaurant} />
+        <Stack.Screen name="Restaurants" component={Home} />
+        <Stack.Screen name="Menu" component={Restaurant} />
         <Stack.Screen name="Cart" component={Cart} />
       </Stack.Navigator>
     </NavigationContainer>
