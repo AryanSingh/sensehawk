@@ -23,6 +23,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Home from './src/components/home/home.tsx';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
+import Restaurant from './src/components/Restaurant/Restaurant.tsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +50,7 @@ function App(): React.JSX.Element {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Restaurant" component={Restaurant} />
       </Stack.Navigator>
     </NavigationContainer>
   );

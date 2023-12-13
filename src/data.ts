@@ -48,40 +48,57 @@ export const restaurantList: IRestaurant[] = [
   },
 ];
 
-export const foodList: IFoodItem[] = [
-  {
-    id: 1,
-    name: 'Food 1',
-    price: 10,
-    restaurantId: 1,
-    cuisine: 'Cuisine 1',
-  },
-  {
-    id: 2,
-    name: 'Food 2',
-    price: 20,
-    restaurantId: 1,
-    cuisine: 'Cuisine 2',
-  },
-  {
-    id: 3,
-    name: 'Food 3',
-    price: 30,
-    restaurantId: 2,
-    cuisine: 'Cuisine 3',
-  },
-  {
-    id: 4,
-    name: 'Food 4',
-    price: 40,
-    restaurantId: 2,
-    cuisine: 'Cuisine 4',
-  },
-  {
-    id: 5,
-    name: 'Food 5',
-    price: 50,
-    restaurantId: 3,
-    cuisine: 'Cuisine 5',
-  },
-];
+// const foodListMap =
+
+export const foodList: Map<number, IFoodItem> = new Map([
+  [
+    1,
+    {
+      id: 1,
+      name: 'Food 1',
+      price: 10,
+      restaurantId: 1,
+      cuisine: 'Cuisine 1',
+    },
+  ],
+  [
+    2,
+    {
+      id: 2,
+      name: 'Food 2',
+      price: 20,
+      restaurantId: 1,
+      cuisine: 'Cuisine 2',
+    },
+  ],
+  [
+    3,
+    {
+      id: 3,
+      name: 'Food 3',
+      price: 30,
+      restaurantId: 2,
+      cuisine: 'Cuisine 3',
+    },
+  ],
+  [
+    4,
+    {
+      id: 4,
+      name: 'Food 4',
+      price: 40,
+      restaurantId: 2,
+      cuisine: 'Cuisine 4',
+    },
+  ],
+  [
+    5,
+    {
+      id: 5,
+      name: 'Food 5',
+      price: 50,
+      restaurantId: 3,
+      cuisine: 'Cuisine 5',
+    },
+  ],
+]);
