@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {foodList} from '../../data.ts';
-import {StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {IFoodItem} from '../../data.interface.ts';
 import MenuItem from '../MenuItem/MenuItem.tsx';
 import {Badge, IconButton} from 'react-native-paper';
@@ -66,17 +66,19 @@ const Restaurant = ({route, navigation}) => {
     });
   };
   return (
-    <View style={Styles.mainContainerStyle}>
-      {renderMenu()}
-      <View style={Styles.floatingMenuButtonStyle}>
-        <IconButton
-          icon="cart"
-          size={30}
-          mode="contained"
-          onPress={() => console.log('Pressed')}></IconButton>
-        {count ? <Badge style={Styles.badge}>{count}</Badge> : null}
+    <ScrollView>
+      <View style={Styles.mainContainerStyle}>
+        {renderMenu()}
+        <View style={Styles.floatingMenuButtonStyle}>
+          <IconButton
+            icon="cart"
+            size={30}
+            mode="contained"
+            onPress={() => navigation.navigate('Cart')}></IconButton>
+          {count ? <Badge style={Styles.badge}>{count}</Badge> : null}
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

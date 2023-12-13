@@ -33,7 +33,6 @@ export const cartSlice = createSlice({
         state.cartItems[action.payload.itemId] =
           action.payload.change > 0 ? action.payload.change : 0;
       }
-      console.log('state', state.cartItems);
     },
     clearCart: state => {
       state.cartItems = {};

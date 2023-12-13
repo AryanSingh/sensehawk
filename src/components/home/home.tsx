@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {Avatar, Button, Card, Text} from 'react-native-paper';
+import {Avatar, Card, Text} from 'react-native-paper';
 import {restaurantList} from '../../data.ts';
-import {View} from 'react-native';
-import BottomNavigationBar from '../BottomNavigation/BottomNavigationBar.tsx';
+import {ScrollView, View} from 'react-native';
 
 // @ts-ignore
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
@@ -36,10 +35,12 @@ const Home = ({navigation}) => {
     });
   };
   return (
-    <View>
-      {renderRestaurantList()}
-      {/*<BottomNavigationBar />*/}
-    </View>
+    <ScrollView>
+      <View>
+        {renderRestaurantList()}
+        {/*<BottomNavigationBar />*/}
+      </View>
+    </ScrollView>
   );
 };
 
