@@ -29,6 +29,9 @@ export const cartSlice = createSlice({
       if (state.cartItems[action.payload.itemId]) {
         state.cartItems[action.payload.itemId] =
           state.cartItems[action.payload.itemId] + action.payload.change;
+        if (state.cartItems[action.payload.itemId] === 0) {
+          delete state.cartItems[action.payload.itemId];
+        }
       } else {
         state.cartItems[action.payload.itemId] =
           action.payload.change > 0 ? action.payload.change : 0;

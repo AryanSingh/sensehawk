@@ -8,7 +8,6 @@ import {
   StyleSheet,
   TextInput,
   View,
-  Text,
   ScrollView,
   Image,
   Keyboard,
@@ -17,12 +16,13 @@ import {
 } from 'react-native';
 
 import auth from '@react-native-firebase/auth';
+import {Button, Text} from 'react-native-paper';
 
 const LoginScreen = ({navigation}) => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [errortext, setErrortext] = useState('');
-
+  const [user, setUser] = useState(null);
   const passwordInputRef = createRef();
 
   const handleSubmitPress = () => {
@@ -40,7 +40,8 @@ const LoginScreen = ({navigation}) => {
       .then(user => {
         console.log(user);
         // If server response message same as Data Matched
-        if (user) navigation.replace('Restaurants');
+        setUser(user);
+        if (user) navigation.navigate('Restaurants');
       })
       .catch(error => {
         console.log(error);
@@ -63,54 +64,64 @@ const LoginScreen = ({navigation}) => {
           alignContent: 'center',
         }}>
         <View>
-          <KeyboardAvoidingView enabled>
-            <View style={{alignItems: 'center'}}></View>
-            <View style={styles.sectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={UserEmail => setUserEmail(UserEmail)}
-                placeholder="Enter Email"
-                placeholderTextColor="#8b9cb5"
-                autoCapitalize="none"
-                keyboardType="email-address"
-                returnKeyType="next"
-                onSubmitEditing={() =>
-                  passwordInputRef.current && passwordInputRef.current.focus()
-                }
-                underlineColorAndroid="#f000"
-                blurOnSubmit={false}
-              />
-            </View>
-            <View style={styles.sectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={UserPassword => setUserPassword(UserPassword)}
-                placeholder="Enter Password"
-                placeholderTextColor="#8b9cb5"
-                keyboardType="default"
-                ref={passwordInputRef}
-                onSubmitEditing={Keyboard.dismiss}
-                blurOnSubmit={false}
-                secureTextEntry={true}
-                underlineColorAndroid="#f000"
-                returnKeyType="next"
-              />
-            </View>
-            {errortext != '' ? (
-              <Text style={styles.errorTextStyle}> {errortext} </Text>
-            ) : null}
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={handleSubmitPress}>
-              <Text style={styles.buttonTextStyle}>LOGIN</Text>
-            </TouchableOpacity>
-            <Text
-              style={styles.registerTextStyle}
-              onPress={() => navigation.navigate('RegisterScreen')}>
-              New Here ? Register
-            </Text>
-          </KeyboardAvoidingView>
+          {!user ? (
+            <KeyboardAvoidingView enabled>
+              <View style={{alignItems: 'center'}}></View>
+              <View style={styles.sectionStyle}>
+                <TextInput
+                  style={styles.inputStyle}
+                  onChangeText={UserEmail => setUserEmail(UserEmail)}
+                  placeholder="Enter Email"
+                  placeholderTextColor="#8b9cb5"
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  returnKeyType="next"
+                  onSubmitEditing={() =>
+                    passwordInputRef.current && passwordInputRef.current.focus()
+                  }
+                  underlineColorAndroid="#f000"
+                  blurOnSubmit={false}
+                />
+              </View>
+              <View style={styles.sectionStyle}>
+                <TextInput
+                  style={styles.inputStyle}
+                  onChangeText={UserPassword => setUserPassword(UserPassword)}
+                  placeholder="Enter Password"
+                  placeholderTextColor="#8b9cb5"
+                  keyboardType="default"
+                  ref={passwordInputRef}
+                  onSubmitEditing={Keyboard.dismiss}
+                  blurOnSubmit={false}
+                  secureTextEntry={true}
+                  underlineColorAndroid="#f000"
+                  returnKeyType="next"
+                />
+              </View>
+              {errortext != '' ? (
+                <Text style={styles.errorTextStyle}> {errortext} </Text>
+              ) : null}
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                activeOpacity={0.5}
+                onPress={handleSubmitPress}>
+                <Text style={styles.buttonTextStyle}>LOGIN</Text>
+              </TouchableOpacity>
+              <Text
+                style={styles.registerTextStyle}
+                onPress={() => navigation.navigate('RegisterScreen')}>
+                New Here ? Register
+              </Text>
+            </KeyboardAvoidingView>
+          ) : (
+            <Button
+              elevation={1}
+              style={styles.logoutButton}
+              mode="contained"
+              onPress={() => setUser(null)}>
+              <Text variant="bodyLarge">Logout</Text>
+            </Button>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -124,6 +135,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#307ecc',
     alignContent: 'center',
+  },
+  logoutButton: {
+    margin: 'auto',
+    padding: 20,
+    width: 300,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#888',
+    text: '#fff',
+    // width: '50%',
+    // left: '50%',
   },
   sectionStyle: {
     flexDirection: 'row',

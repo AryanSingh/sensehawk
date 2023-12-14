@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Avatar, Card, Text} from 'react-native-paper';
 import {foodList} from '../../data.ts';
-import {StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {ICheckoutItem} from '../../data.interface.ts';
 import {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
@@ -35,33 +35,49 @@ const Styles = StyleSheet.create({
   totalText: {
     margin: 10,
   },
+  emptyCartView: {
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // position: 'absolute',
+    // top: '50%',
+    // left: '50%',
+  },
 });
 
 // @ts-ignore
 const LeftContent = props => <Avatar.Icon {...props} icon="food" />;
 
 // @ts-ignore
-const Cart = () => {
+const Cart = ({navigation}) => {
   const cartItems = useSelector((state: RootState) => state.cartItems);
   const cartItemsKeys = Object.keys(cartItems);
   const [foodItems, setFoodItems] = useState<ICheckoutItem[]>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
   useEffect(() => {
-    let arr: ICheckoutItem[] = [];
-    cartItemsKeys.forEach(itemKey => {
-      let foodItem = foodList.get(parseInt(itemKey));
-      if (foodItem) {
-        arr.push({
-          count: cartItems[parseInt(itemKey)],
-          foodId: parseInt(itemKey),
-          ...foodItem,
-        });
-      }
+    const unsubscribe = navigation.addListener('focus', () => {
+      // The screen is focused
+      // Call any action
+      let arr: ICheckoutItem[] = [];
+      cartItemsKeys.forEach(itemKey => {
+        let foodItem = foodList.get(parseInt(itemKey));
+        if (foodItem) {
+          arr.push({
+            count: cartItems[parseInt(itemKey)],
+            foodId: parseInt(itemKey),
+            ...foodItem,
+          });
+        }
+      });
+      setFoodItems(arr);
+      setTotalPrice(arr.reduce((acc, cur) => acc + cur.price * cur.count, 0));
     });
-    setFoodItems(arr);
-    setTotalPrice(arr.reduce((acc, cur) => acc + cur.price * cur.count, 0));
-  }, []);
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [cartItems, cartItemsKeys, navigation]);
+
   const renderCart = () => {
     return foodItems
       ? foodItems.map(food => {
@@ -88,9 +104,15 @@ const Cart = () => {
   };
   return (
     <View>
-      {renderCart()}
+      <ScrollView>{renderCart()}</ScrollView>
       <View style={Styles.totalText}>
-        <Text variant="headlineMedium">Total: {totalPrice}</Text>
+        {totalPrice === 0 ? (
+          <View style={Styles.emptyCartView}>
+            <Text>Cart empty</Text>
+          </View>
+        ) : (
+          <Text variant="headlineMedium">Total: {totalPrice}</Text>
+        )}
       </View>
     </View>
   );

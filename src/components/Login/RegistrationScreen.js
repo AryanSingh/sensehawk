@@ -44,7 +44,7 @@ const RegisterScreen = ({navigation}) => {
               displayName: userName,
               photoURL: 'https://aboutreact.com/profile.png',
             })
-            .then(() => navigation.replace('Restaurants'))
+            .then(() => navigation.navigate('Restaurants'))
             .catch(error => {
               alert(error);
               console.error(error);

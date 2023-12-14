@@ -5,21 +5,34 @@
  * @format
  */
 import 'react-native-gesture-handler';
-import {Drawer} from 'react-native-paper';
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useState} from 'react';
 // @ts-ignore
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import Home from './src/components/home/home.tsx';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
-import Restaurant from './src/components/Restaurant/Restaurant.tsx';
 import Cart from './src/components/Cart/Cart.tsx';
 import LoginScreen from './src/components/Login/LoginScreen.js';
 import RegisterScreen from './src/components/Login/RegistrationScreen.js';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Badge, BottomNavigation, IconButton} from 'react-native-paper';
+import {useSelector} from 'react-redux';
+import {RootState} from './src/store.tsx';
+import {StyleSheet, View} from 'react-native';
+
 // import {createDrawerNavigator} from '@react-navigation/drawer';
 
 const Stack = createNativeStackNavigator();
-// const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
+
+const Styles = StyleSheet.create({
+  badge: {
+    position: 'absolute',
+    top: -12,
+    right: -12,
+  },
+});
 
 const Auth = () => {
   // Stack Navigator for Login and Sign up Screen
@@ -48,29 +61,16 @@ const Auth = () => {
   );
 };
 
-const DrawerSection = () => {
-  const [active, setActive] = React.useState('');
-
-  return (
-    <Drawer.Section title="Some title">
-      <Drawer.Item
-        label="First Item"
-        active={active === 'first'}
-        onPress={() => setActive('first')}
-      />
-      <Drawer.Item
-        label="Second Item"
-        active={active === 'second'}
-        onPress={() => setActive('second')}
-      />
-    </Drawer.Section>
-  );
-};
-
 function App(): React.JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const count = useSelector((state: RootState) =>
+    Object.keys(state.cartItems).reduce(
+      (acc, val) => (acc = acc + state.cartItems[val]),
+      0,
+    ),
+  );
   useEffect(() => {
     // @ts-ignore
     auth().onAuthStateChanged(userState => {
@@ -90,16 +90,87 @@ function App(): React.JSX.Element {
       {/*  label="Inbox"*/}
       {/*/>*/}
       {/*<DrawerSection />*/}
-      <Stack.Navigator initialRouteName="Auth">
-        <Stack.Screen
+      <Tab.Navigator
+        initialRouteName="Auth"
+        screenOptions={{headerShown: false}}
+        tabBar={({navigation, state, descriptors, insets}) => (
+          <BottomNavigation.Bar
+            navigationState={state}
+            safeAreaInsets={insets}
+            onTabPress={({route, preventDefault}) => {
+              const event = navigation.emit({
+                type: 'tabPress',
+                target: route.key,
+                canPreventDefault: true,
+              });
+
+              if (event.defaultPrevented) {
+                preventDefault();
+              } else {
+                navigation.navigate(route.name);
+              }
+            }}
+            renderIcon={({route, focused, color}) => {
+              const {options} = descriptors[route.key];
+              if (options.tabBarIcon) {
+                return options.tabBarIcon({focused, color, size: 24});
+              }
+
+              return null;
+            }}
+            getLabelText={({route}) => {
+              const {options} = descriptors[route.key];
+              const label =
+                options.tabBarLabel !== undefined
+                  ? options.tabBarLabel
+                  : options.title !== undefined
+                  ? options.title
+                  : route.title;
+
+              return label;
+            }}
+          />
+        )}>
+        <Tab.Screen
           name="Auth"
           component={Auth}
-          options={{headerShown: false}}
+          options={{
+            tabBarLabel: 'Profile',
+            tabBarIcon: ({color, size}) => {
+              return <Icon name="face-man" size={size} color={color} />;
+            },
+          }}
         />
-        <Stack.Screen name="Restaurants" component={Home} />
-        <Stack.Screen name="Menu" component={Restaurant} />
-        <Stack.Screen name="Cart" component={Cart} />
-      </Stack.Navigator>
+        <Tab.Screen
+          name="Restaurants"
+          component={Home}
+          options={{
+            tabBarLabel: 'Food',
+            tabBarIcon: ({color, size}) => {
+              return <Icon name="food-fork-drink" size={size} color={color} />;
+            },
+          }}
+        />
+        {/*<Tab.Screen name="Menu" component={Restaurant} />*/}
+        <Tab.Screen
+          name="Cart"
+          component={Cart}
+          options={{
+            tabBarLabel: 'Cart',
+            headerShown: true,
+            tabBarBadge: count,
+            tabBarIcon: ({color, size}) => {
+              // return <Icon name="cart" size={size} color={color} />;
+              return (
+                <View>
+                  <Icon color={color} name="cart" size={size} />
+                  {count ? <Badge style={Styles.badge}>{count}</Badge> : null}
+                </View>
+              );
+            },
+          }}
+        />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
