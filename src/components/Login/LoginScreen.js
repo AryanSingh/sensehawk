@@ -118,7 +118,10 @@ const LoginScreen = ({navigation}) => {
               elevation={1}
               style={styles.logoutButton}
               mode="elevated"
-              onPress={() => setUser(null)}>
+              onPress={() => {
+                setUser(null);
+                auth().signOut();
+              }}>
               <Text variant="headlineMedium">Logout</Text>
             </Button>
           )}

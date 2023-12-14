@@ -5,7 +5,7 @@
  * @format
  */
 import 'react-native-gesture-handler';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 // @ts-ignore
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import Home from './src/components/home/home.tsx';
@@ -71,25 +71,24 @@ function App(): React.JSX.Element {
       0,
     ),
   );
-  useEffect(() => {
-    // @ts-ignore
-    auth().onAuthStateChanged(userState => {
-      setUser(userState);
 
+  const onAuthStateChanged = useCallback(
+    (user: FirebaseAuthTypes.User | null) => {
+      setUser(user);
       if (loading) {
         setLoading(false);
       }
-    });
-  }, [loading]);
+    },
+    [loading],
+  );
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
   return (
     <NavigationContainer>
-      {/*<Drawer.CollapsedItem*/}
-      {/*  focusedIcon="inbox"*/}
-      {/*  unfocusedIcon="inbox-outline"*/}
-      {/*  label="Inbox"*/}
-      {/*/>*/}
-      {/*<DrawerSection />*/}
       <Tab.Navigator
         initialRouteName="Auth"
         screenOptions={{headerShown: false}}
@@ -141,35 +140,42 @@ function App(): React.JSX.Element {
             },
           }}
         />
-        <Tab.Screen
-          name="Restaurants"
-          component={Home}
-          options={{
-            tabBarLabel: 'Food',
-            tabBarIcon: ({color, size}) => {
-              return <Icon name="food-fork-drink" size={size} color={color} />;
-            },
-          }}
-        />
+        {user && (
+          <Tab.Screen
+            name="Restaurants"
+            component={Home}
+            options={{
+              tabBarLabel: 'Food',
+              tabBarIcon: ({color, size}) => {
+                return (
+                  <Icon name="food-fork-drink" size={size} color={color} />
+                );
+              },
+            }}
+          />
+        )}
+
         {/*<Tab.Screen name="Menu" component={Restaurant} />*/}
-        <Tab.Screen
-          name="Cart"
-          component={Cart}
-          options={{
-            tabBarLabel: 'Cart',
-            headerShown: true,
-            tabBarBadge: count,
-            tabBarIcon: ({color, size}) => {
-              // return <Icon name="cart" size={size} color={color} />;
-              return (
-                <View>
-                  <Icon color={color} name="cart" size={size} />
-                  {count ? <Badge style={Styles.badge}>{count}</Badge> : null}
-                </View>
-              );
-            },
-          }}
-        />
+        {user && (
+          <Tab.Screen
+            name="Cart"
+            component={Cart}
+            options={{
+              tabBarLabel: 'Cart',
+              headerShown: true,
+              tabBarBadge: count,
+              tabBarIcon: ({color, size}) => {
+                // return <Icon name="cart" size={size} color={color} />;
+                return (
+                  <View>
+                    <Icon color={color} name="cart" size={size} />
+                    {count ? <Badge style={Styles.badge}>{count}</Badge> : null}
+                  </View>
+                );
+              },
+            }}
+          />
+        )}
       </Tab.Navigator>
     </NavigationContainer>
   );
