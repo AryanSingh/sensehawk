@@ -22,7 +22,7 @@ import {
 } from 'react-native';
 
 import auth from '@react-native-firebase/auth';
-import {Button, Text} from 'react-native-paper';
+import {Button, Card, Text} from 'react-native-paper';
 import {ICheckoutItem} from '../../data.interface';
 import {foodList} from '../../data';
 
@@ -78,17 +78,25 @@ const LoginScreen = ({navigation}) => {
       return (
         <View>
           {userRef && userRef.current ? (
-            <Button
-              elevation={1}
-              style={styles.logoutButton}
-              mode="elevated"
-              onPress={() => {
-                setUser(null);
-                auth().signOut();
-                userRef.current = null;
-              }}>
-              <Text variant="headlineMedium">Logout</Text>
-            </Button>
+            <Card style={styles.cardContainer}>
+              <Card.Content style={styles.contentStyle}>
+                <Text variant="bodyLarge">
+                  Name: {userRef.current.displayName}
+                </Text>
+                <Text variant="bodyLarge">Email: {userRef.current.email}</Text>
+                <Button
+                  elevation={1}
+                  style={styles.logoutButton}
+                  mode="elevated"
+                  onPress={() => {
+                    setUser(null);
+                    auth().signOut();
+                    userRef.current = null;
+                  }}>
+                  <Text variant="bodyMedium">Logout</Text>
+                </Button>
+              </Card.Content>
+            </Card>
           ) : (
             <KeyboardAvoidingView enabled>
               <View style={{alignItems: 'center'}}></View>
@@ -176,8 +184,8 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     margin: 'auto',
-    padding: 20,
-    width: 300,
+    // padding: 20,
+    // width: 300,
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: '#808080',
@@ -228,9 +236,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 10,
   },
+  cardContainer: {
+    margin: 10,
+  },
   errorTextStyle: {
     color: 'red',
     textAlign: 'center',
     fontSize: 14,
+  },
+  contentStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
