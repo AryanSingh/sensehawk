@@ -38,7 +38,6 @@ const LoginScreen = ({navigation}) => {
     auth()
       .signInWithEmailAndPassword(userEmail, userPassword)
       .then(user => {
-        console.log(user);
         // If server response message same as Data Matched
         setUser(user);
         if (user) navigation.navigate('Restaurants');

@@ -36,15 +36,15 @@ const RegisterScreen = ({navigation}) => {
     auth()
       .createUserWithEmailAndPassword(userEmail, userPassword)
       .then(user => {
-        console.log('Registration Successful. Please Login to proceed');
-        console.log(user);
         if (user) {
           auth()
             .currentUser.updateProfile({
               displayName: userName,
               photoURL: 'https://aboutreact.com/profile.png',
             })
-            .then(() => navigation.navigate('Restaurants'))
+            .then(() => {
+              navigation.pop();
+            })
             .catch(error => {
               alert(error);
               console.error(error);
