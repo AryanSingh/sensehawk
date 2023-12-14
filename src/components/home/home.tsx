@@ -6,7 +6,7 @@ import {useEffect, useState} from 'react';
 import {IRestaurant} from '../../data.interface.ts';
 
 // @ts-ignore
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
+const LeftContent = props => <Avatar.Icon {...props} icon="food" />;
 
 const Styles = StyleSheet.create({
   restaurantCard: {
@@ -62,7 +62,7 @@ const Home = ({navigation}) => {
           key={restaurant.id}>
           <Card.Title title={restaurant.name} subtitle="" left={LeftContent} />
           <Card.Content>
-            <Text variant="titleLarge">{restaurant.name}</Text>
+            {/*<Text variant="titleLarge">{restaurant.name}</Text>*/}
             <Text variant="bodyMedium">Address: {restaurant.address}</Text>
             <Text variant="bodyMedium">Distance: {restaurant.distance}</Text>
             <Text variant="bodyMedium">Rating: {restaurant.rating}</Text>
