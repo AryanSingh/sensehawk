@@ -43,7 +43,11 @@ const RegisterScreen = ({navigation}) => {
               photoURL: 'https://aboutreact.com/profile.png',
             })
             .then(() => {
-              navigation.pop();
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'Restaurants'}],
+              });
+              // navigation.pop();
             })
             .catch(error => {
               alert(error);

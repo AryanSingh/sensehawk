@@ -2,7 +2,13 @@
 // https://aboutreact.com/react-native-firebase-authentication/
 
 // Import React and Component
-import React, {useState, createRef} from 'react';
+import React, {
+  useState,
+  createRef,
+  useEffect,
+  useCallback,
+  useRef,
+} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -17,15 +23,29 @@ import {
 
 import auth from '@react-native-firebase/auth';
 import {Button, Text} from 'react-native-paper';
+import {ICheckoutItem} from '../../data.interface';
+import {foodList} from '../../data';
 
 const LoginScreen = ({navigation}) => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [errortext, setErrortext] = useState('');
   const [user, setUser] = useState(null);
+  const userRef = useRef(null);
   const passwordInputRef = createRef();
 
-  const handleSubmitPress = () => {
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      let curUser = auth().currentUser;
+      if (curUser) setUser(curUser);
+      userRef.current = curUser;
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation, user]);
+
+  const handleSubmitPress = useCallback(() => {
     setErrortext('');
     if (!userEmail) {
       alert('Please fill Email');
@@ -51,19 +71,25 @@ const LoginScreen = ({navigation}) => {
           setErrortext('Please check your email id or password');
         }
       });
-  };
+  }, [navigation, userEmail, userPassword]);
 
-  return (
-    <SafeAreaView style={styles.mainBody}>
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          flex: 1,
-          justifyContent: 'center',
-          alignContent: 'center',
-        }}>
+  const renderView = useCallback(
+    curUser => {
+      return (
         <View>
-          {!user ? (
+          {userRef && userRef.current ? (
+            <Button
+              elevation={1}
+              style={styles.logoutButton}
+              mode="elevated"
+              onPress={() => {
+                setUser(null);
+                auth().signOut();
+                userRef.current = null;
+              }}>
+              <Text variant="headlineMedium">Logout</Text>
+            </Button>
+          ) : (
             <KeyboardAvoidingView enabled>
               <View style={{alignItems: 'center'}}></View>
               <View style={styles.sectionStyle}>
@@ -112,19 +138,29 @@ const LoginScreen = ({navigation}) => {
                 New Here ? Register
               </Text>
             </KeyboardAvoidingView>
-          ) : (
-            <Button
-              elevation={1}
-              style={styles.logoutButton}
-              mode="elevated"
-              onPress={() => {
-                setUser(null);
-                auth().signOut();
-              }}>
-              <Text variant="headlineMedium">Logout</Text>
-            </Button>
           )}
         </View>
+      );
+    },
+    [
+      errortext,
+      handleSubmitPress,
+      navigation,
+      passwordInputRef,
+      userRef.current,
+    ],
+  );
+
+  return (
+    <SafeAreaView style={styles.mainBody}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{
+          flex: 1,
+          justifyContent: 'center',
+          alignContent: 'center',
+        }}>
+        {renderView(user)}
       </ScrollView>
     </SafeAreaView>
   );
