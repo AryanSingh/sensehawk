@@ -1,12 +1,5 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
 import 'react-native-gesture-handler';
 import React, {useCallback, useEffect, useState} from 'react';
-// @ts-ignore
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import Home from './src/components/home/home.tsx';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -16,12 +9,10 @@ import LoginScreen from './src/components/Login/LoginScreen.js';
 import RegisterScreen from './src/components/Login/RegistrationScreen.js';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Badge, BottomNavigation, IconButton} from 'react-native-paper';
+import {Badge, BottomNavigation} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 import {RootState} from './src/store.tsx';
 import {StyleSheet, View} from 'react-native';
-
-// import {createDrawerNavigator} from '@react-navigation/drawer';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,13 +38,13 @@ const Auth = () => {
         name="RegisterScreen"
         component={RegisterScreen}
         options={{
-          title: 'Register', //Set Header Title
+          title: 'Register',
           headerStyle: {
-            backgroundColor: '#307ecc', //Set Header color
+            backgroundColor: '#307ecc',
           },
-          headerTintColor: '#fff', //Set Header text color
+          headerTintColor: '#fff',
           headerTitleStyle: {
-            fontWeight: 'bold', //Set Header text style
+            fontWeight: 'bold',
           },
         }}
       />
@@ -62,7 +53,6 @@ const Auth = () => {
 };
 
 function App(): React.JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const count = useSelector((state: RootState) =>
@@ -85,7 +75,7 @@ function App(): React.JSX.Element {
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
-  }, []);
+  }, [onAuthStateChanged]);
 
   return (
     <NavigationContainer>
