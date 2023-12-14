@@ -117,9 +117,9 @@ const LoginScreen = ({navigation}) => {
             <Button
               elevation={1}
               style={styles.logoutButton}
-              mode="contained"
+              mode="elevated"
               onPress={() => setUser(null)}>
-              <Text variant="bodyLarge">Logout</Text>
+              <Text variant="headlineMedium">Logout</Text>
             </Button>
           )}
         </View>
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     width: 300,
     alignSelf: 'center',
     justifyContent: 'center',
-    backgroundColor: '#888',
+    backgroundColor: '#808080',
     text: '#fff',
     // width: '50%',
     // left: '50%',

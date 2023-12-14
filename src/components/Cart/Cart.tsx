@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {Avatar, Card, Text} from 'react-native-paper';
-import {foodList} from '../../data.ts';
+import {foodList, restaurantList} from '../../data.ts';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {ICheckoutItem} from '../../data.interface.ts';
 import {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store.tsx';
+import restaurant from '../Restaurant/Restaurant.tsx';
 
 const Styles = StyleSheet.create({
   mainContainerStyle: {
@@ -23,6 +24,9 @@ const Styles = StyleSheet.create({
     right: 0,
   },
   restaurantCard: {
+    margin: 10,
+  },
+  restaurantName: {
     margin: 10,
   },
   scrollContainer: {
@@ -51,6 +55,10 @@ const LeftContent = props => <Avatar.Icon {...props} icon="food" />;
 // @ts-ignore
 const Cart = ({navigation}) => {
   const cartItems = useSelector((state: RootState) => state.cartItems);
+  const restaurantId = useSelector((state: RootState) => state.restaurantId);
+  const restaurant = restaurantId
+    ? restaurantList.find(item => item.id === restaurantId)
+    : null;
   const cartItemsKeys = Object.keys(cartItems);
   const [foodItems, setFoodItems] = useState<ICheckoutItem[]>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -104,6 +112,11 @@ const Cart = ({navigation}) => {
   };
   return (
     <View>
+      {restaurant && totalPrice ? (
+        <Text style={Styles.restaurantName} variant="headlineMedium">
+          {restaurant.name}
+        </Text>
+      ) : null}
       <ScrollView>{renderCart()}</ScrollView>
       <View style={Styles.totalText}>
         {totalPrice === 0 ? (

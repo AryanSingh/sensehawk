@@ -3,7 +3,7 @@ import {foodList} from '../../data.ts';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {IFoodItem} from '../../data.interface.ts';
 import MenuItem from '../MenuItem/MenuItem.tsx';
-import {Badge, IconButton} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store.tsx';
 import {useCallback, useEffect, useState} from 'react';
@@ -33,6 +33,9 @@ const Styles = StyleSheet.create({
     marginBottom: 60,
   },
   searchContainer: {
+    margin: 10,
+  },
+  restaurantName: {
     margin: 10,
   },
 });
@@ -110,6 +113,9 @@ const Restaurant = ({route, navigation}) => {
         value={searchQuery}
         style={Styles.searchContainer}
       />
+      <Text style={Styles.restaurantName} variant="headlineMedium">
+        {restaurant.name}
+      </Text>
       <ScrollView style={Styles.scrollContainer}>{renderMenu()}</ScrollView>
       {/*<View style={Styles.floatingMenuButtonStyle}>*/}
       {/*  <IconButton*/}
