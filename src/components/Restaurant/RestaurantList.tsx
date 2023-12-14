@@ -14,7 +14,7 @@ const Styles = StyleSheet.create({
   },
   scrollContainer: {
     // paddingBottom: 40,
-    marginBottom: 100,
+    marginBottom: 190,
   },
   searchContainer: {
     margin: 10,
