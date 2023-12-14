@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Avatar, Card, Searchbar, Text} from 'react-native-paper';
+import {Avatar, Card, Searchbar, Text, Chip} from 'react-native-paper';
 import {restaurantList} from '../../data.ts';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {useEffect, useState} from 'react';
@@ -19,33 +19,62 @@ const Styles = StyleSheet.create({
   searchContainer: {
     margin: 10,
   },
+  sortContainer: {
+    margin: 10,
+    // height: 30,
+    // flexDirection: 'column',
+    // flex: 1,
+  },
+  sortContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
 });
 
 // @ts-ignore
 const RestaurantList = ({navigation}) => {
   const [searchQuery, setSearchQuery] = React.useState('');
-
   const onChangeSearch = (query: string) => setSearchQuery(query);
   const [filteredRestaurants, setFilteredRestaurants] = useState<IRestaurant[]>(
     [],
   );
+  const [selectedFilter, setSelectedFilter] = useState<
+    'rating' | 'distance' | ''
+  >('');
+
+  const toggleFilter = (filter: 'rating' | 'distance' | '') => {
+    if (selectedFilter === filter) setSelectedFilter('');
+    else {
+      setSelectedFilter(filter);
+    }
+  };
 
   useEffect(() => {
     setFilteredRestaurants(filterRestaurants(restaurantList, searchQuery));
-  }, [searchQuery]);
+  }, [searchQuery, selectedFilter]);
   const filterRestaurants = (items: IRestaurant[], query: string) => {
-    return items.filter(item => {
-      if (
-        item.name.toLowerCase().includes(query.toLowerCase()) ||
-        item.address.toLowerCase().includes(query.toLowerCase()) ||
-        item.cuisine.find((con: string) =>
-          con.toLowerCase().includes(query.toLowerCase()),
-        )
-      ) {
-        return true;
-      }
-      return false;
-    });
+    return items
+      .filter(item => {
+        if (
+          item.name.toLowerCase().includes(query.toLowerCase()) ||
+          item.address.toLowerCase().includes(query.toLowerCase()) ||
+          item.cuisine.find((con: string) =>
+            con.toLowerCase().includes(query.toLowerCase()),
+          )
+        ) {
+          return true;
+        }
+        return false;
+      })
+      .sort((a, b) => {
+        if (selectedFilter && selectedFilter === 'distance')
+          return a[selectedFilter] - b[selectedFilter];
+        else if (selectedFilter && selectedFilter === 'rating') {
+          return b[selectedFilter] - a[selectedFilter];
+        }
+        return 0;
+      });
   };
 
   const renderRestaurantList = () => {
@@ -82,6 +111,23 @@ const RestaurantList = ({navigation}) => {
         value={searchQuery}
         style={Styles.searchContainer}
       />
+      <Card style={Styles.sortContainer}>
+        <Card.Content style={Styles.sortContent}>
+          <View>
+            <Text>Sort By:</Text>
+          </View>
+          <Chip
+            selected={selectedFilter === 'distance'}
+            onPress={() => toggleFilter('distance')}>
+            Distance
+          </Chip>
+          <Chip
+            selected={selectedFilter === 'rating'}
+            onPress={() => toggleFilter('rating')}>
+            Rating
+          </Chip>
+        </Card.Content>
+      </Card>
       <ScrollView style={Styles.scrollContainer}>
         {renderRestaurantList()}
       </ScrollView>
