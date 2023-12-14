@@ -9,6 +9,7 @@ export const restaurantList: IRestaurant[] = [
     rating: 4,
     distance: 1.2,
     foodList: [1, 2, 5],
+    cuisine: ['Indian', 'Chinese', 'French'],
   },
   {
     id: 2,
@@ -18,6 +19,7 @@ export const restaurantList: IRestaurant[] = [
     rating: 3,
     distance: 2.2,
     foodList: [3, 4],
+    cuisine: ['Mediterranean', 'Italian'],
   },
   {
     id: 3,
@@ -27,6 +29,7 @@ export const restaurantList: IRestaurant[] = [
     rating: 5,
     distance: 3.2,
     foodList: [1, 2, 3, 4, 5],
+    cuisine: ['Indian', 'Chinese', 'Mediterranean', 'Italian', 'French'],
   },
   {
     id: 4,
@@ -36,6 +39,7 @@ export const restaurantList: IRestaurant[] = [
     rating: 2,
     distance: 4.2,
     foodList: [1, 2, 3, 4],
+    cuisine: ['Indian', 'Chinese', 'Mediterranean', 'Italian'],
   },
   {
     id: 5,
@@ -45,6 +49,7 @@ export const restaurantList: IRestaurant[] = [
     rating: 1,
     distance: 5.2,
     foodList: [1, 2, 3, 4, 5],
+    cuisine: ['Indian', 'Chinese', 'Mediterranean', 'Italian', 'French'],
   },
 ];
 
@@ -55,50 +60,50 @@ export const foodList: Map<number, IFoodItem> = new Map([
     1,
     {
       id: 1,
-      name: 'Food 1',
+      name: 'Chicken tikka',
       price: 10,
       restaurantId: 1,
-      cuisine: 'Cuisine 1',
+      cuisine: 'Indian',
     },
   ],
   [
     2,
     {
       id: 2,
-      name: 'Food 2',
+      name: 'Noodles',
       price: 20,
       restaurantId: 1,
-      cuisine: 'Cuisine 2',
+      cuisine: 'Chinese',
     },
   ],
   [
     3,
     {
       id: 3,
-      name: 'Food 3',
+      name: 'Salami',
       price: 30,
       restaurantId: 2,
-      cuisine: 'Cuisine 3',
+      cuisine: 'Mediterranean',
     },
   ],
   [
     4,
     {
       id: 4,
-      name: 'Food 4',
+      name: 'Pasta',
       price: 40,
       restaurantId: 2,
-      cuisine: 'Cuisine 4',
+      cuisine: 'Italian',
     },
   ],
   [
     5,
     {
       id: 5,
-      name: 'Food 5',
+      name: 'Quiche',
       price: 50,
       restaurantId: 3,
-      cuisine: 'Cuisine 5',
+      cuisine: 'French',
     },
   ],
 ]);

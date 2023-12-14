@@ -10,7 +10,7 @@ const LeftContent = props => <Avatar.Icon {...props} icon="food" />;
 
 // @ts-ignore
 const MenuItem = props => {
-  const {menuItem, navigation, restaurant} = props;
+  const {menuItem, navigation, restaurant, style} = props;
   const count = useSelector((state: RootState) =>
     state.cartItems[menuItem.id] ? state.cartItems[menuItem.id] : 0,
   );
@@ -18,6 +18,7 @@ const MenuItem = props => {
 
   return (
     <Card
+      style={style}
       // onPress={() => navigation.navigate('Restaurant')}
       key={menuItem.id}>
       <Card.Title title={menuItem.name} subtitle="" left={LeftContent} />

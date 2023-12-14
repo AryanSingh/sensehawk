@@ -6,7 +6,7 @@ import MenuItem from '../MenuItem/MenuItem.tsx';
 import {Badge, IconButton} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store.tsx';
-import {useEffect} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {clearCart} from '../Cart/cartSlice.tsx';
 import {Searchbar} from 'react-native-paper';
 
@@ -24,6 +24,16 @@ const Styles = StyleSheet.create({
     position: 'absolute',
     top: 4,
     right: 0,
+  },
+  restaurantCard: {
+    margin: 10,
+  },
+  scrollContainer: {
+    paddingBottom: 40,
+    marginBottom: 60,
+  },
+  searchContainer: {
+    margin: 10,
   },
 });
 
@@ -53,19 +63,41 @@ const Restaurant = ({route, navigation}) => {
       }
     }
   }, [restaurant, cartRestaurantId, dispatch]);
+
+  const [filteredMenu, setFilteredMenu] = useState<IFoodItem[]>([]);
+
+  const filterMenu = useCallback(
+    (query: string) => {
+      let menuItems: IFoodItem[] = [];
+      restaurant.foodList.forEach((food: number) => {
+        if (foodList.get(food)) {
+          menuItems.push(foodList.get(food) as IFoodItem);
+        }
+      });
+      return menuItems.filter(item => {
+        if (
+          item.name.toLowerCase().includes(query.toLowerCase()) ||
+          item.cuisine.toLowerCase().includes(query.toLowerCase())
+        ) {
+          return true;
+        }
+        return false;
+      });
+    },
+    [restaurant.foodList],
+  );
+
+  useEffect(() => {
+    setFilteredMenu(filterMenu(searchQuery));
+  }, [searchQuery, filterMenu]);
   const renderMenu = () => {
-    let menuItems: IFoodItem[] = [];
-    restaurant.foodList.forEach((food: number) => {
-      if (foodList.get(food)) {
-        menuItems.push(foodList.get(food) as IFoodItem);
-      }
-    });
-    return menuItems.map(menuItem => {
+    return filteredMenu.map(menuItem => {
       return (
         <MenuItem
           menuItem={menuItem}
           navigation={navigation}
           restaurant={restaurant}
+          style={Styles.restaurantCard}
         />
       );
     });
@@ -76,8 +108,9 @@ const Restaurant = ({route, navigation}) => {
         placeholder="Search"
         onChangeText={onChangeSearch}
         value={searchQuery}
+        style={Styles.searchContainer}
       />
-      <ScrollView>{renderMenu()}</ScrollView>
+      <ScrollView style={Styles.scrollContainer}>{renderMenu()}</ScrollView>
       <View style={Styles.floatingMenuButtonStyle}>
         <IconButton
           icon="cart"

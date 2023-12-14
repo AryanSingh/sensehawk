@@ -14,6 +14,7 @@ export interface IRestaurant {
   rating: number;
   distance: number;
   foodList: number[];
+  cuisine: string[];
 }
 
 export interface ICartItem {

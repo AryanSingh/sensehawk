@@ -1,29 +1,58 @@
 import * as React from 'react';
 import {Avatar, Card, Searchbar, Text} from 'react-native-paper';
 import {restaurantList} from '../../data.ts';
-import {ScrollView, View} from 'react-native';
-import {useMemo} from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {useEffect, useState} from 'react';
+import {IRestaurant} from '../../data.interface.ts';
 
 // @ts-ignore
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
+
+const Styles = StyleSheet.create({
+  restaurantCard: {
+    margin: 10,
+  },
+  scrollContainer: {
+    // paddingBottom: 40,
+    marginBottom: 100,
+  },
+  searchContainer: {
+    margin: 10,
+  },
+});
 
 // @ts-ignore
 const Home = ({navigation}) => {
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const onChangeSearch = (query: string) => setSearchQuery(query);
-
-  const filterRestaurants = (items, query) => {};
-
-  const filteredRestaurants = useMemo(
-    () => filterRestaurants(restaurantList, searchQuery),
-    [filterRestaurants, searchQuery],
+  const [filteredRestaurants, setFilteredRestaurants] = useState<IRestaurant[]>(
+    [],
   );
 
+  useEffect(() => {
+    setFilteredRestaurants(filterRestaurants(restaurantList, searchQuery));
+  }, [searchQuery]);
+  const filterRestaurants = (items: IRestaurant[], query: string) => {
+    return items.filter(item => {
+      if (
+        item.name.toLowerCase().includes(query) ||
+        item.address.toLowerCase().includes(query) ||
+        item.cuisine.find((con: string) =>
+          con.toLowerCase().includes(query.toLowerCase()),
+        )
+      ) {
+        return true;
+      }
+      return false;
+    });
+  };
+
   const renderRestaurantList = () => {
-    return restaurantList.map(restaurant => {
+    return filteredRestaurants.map(restaurant => {
       return (
         <Card
+          style={Styles.restaurantCard}
           onPress={() => {
             navigation.navigate('Menu', {
               restaurantId: restaurant.id,
@@ -37,6 +66,9 @@ const Home = ({navigation}) => {
             <Text variant="bodyMedium">Address: {restaurant.address}</Text>
             <Text variant="bodyMedium">Distance: {restaurant.distance}</Text>
             <Text variant="bodyMedium">Rating: {restaurant.rating}</Text>
+            <Text variant="bodyMedium">
+              Cusine: {restaurant.cuisine.map(item => item).join(', ')}
+            </Text>
           </Card.Content>
         </Card>
       );
@@ -45,11 +77,14 @@ const Home = ({navigation}) => {
   return (
     <View>
       <Searchbar
-        placeholder="Search"
+        placeholder="Search by restaurant name, address or cusine"
         onChangeText={onChangeSearch}
         value={searchQuery}
+        style={Styles.searchContainer}
       />
-      <ScrollView>{renderRestaurantList()}</ScrollView>
+      <ScrollView style={Styles.scrollContainer}>
+        {renderRestaurantList()}
+      </ScrollView>
       {/*<BottomNavigationBar />*/}
     </View>
   );

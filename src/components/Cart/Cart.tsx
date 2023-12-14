@@ -1,14 +1,44 @@
 import * as React from 'react';
 import {Avatar, Card, Text} from 'react-native-paper';
 import {foodList} from '../../data.ts';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {ICheckoutItem} from '../../data.interface.ts';
 import {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store.tsx';
 
+const Styles = StyleSheet.create({
+  mainContainerStyle: {
+    flexDirection: 'column',
+    flex: 1,
+  },
+  floatingMenuButtonStyle: {
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    bottom: 35,
+  },
+  badge: {
+    position: 'absolute',
+    top: 4,
+    right: 0,
+  },
+  restaurantCard: {
+    margin: 10,
+  },
+  scrollContainer: {
+    paddingBottom: 40,
+    marginBottom: 60,
+  },
+  searchContainer: {
+    margin: 10,
+  },
+  totalText: {
+    margin: 10,
+  },
+});
+
 // @ts-ignore
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
+const LeftContent = props => <Avatar.Icon {...props} icon="food" />;
 
 // @ts-ignore
 const Cart = () => {
@@ -36,12 +66,8 @@ const Cart = () => {
     return foodItems
       ? foodItems.map(food => {
           return (
-            <Card key={food.id}>
-              <Card.Title
-                title={food.name}
-                subtitle="Card Subtitle"
-                left={LeftContent}
-              />
+            <Card style={Styles.restaurantCard} key={food.id}>
+              <Card.Title title={food.name} subtitle="" left={LeftContent} />
               <Card.Content>
                 <Text variant="titleLarge">{food.name}</Text>
                 <Text variant="bodyMedium">
@@ -63,8 +89,8 @@ const Cart = () => {
   return (
     <View>
       {renderCart()}
-      <View>
-        <Text>Total: {totalPrice}</Text>
+      <View style={Styles.totalText}>
+        <Text variant="headlineMedium">Total: {totalPrice}</Text>
       </View>
     </View>
   );
