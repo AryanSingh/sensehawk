@@ -36,8 +36,8 @@ const RestaurantList = ({navigation}) => {
   const filterRestaurants = (items: IRestaurant[], query: string) => {
     return items.filter(item => {
       if (
-        item.name.toLowerCase().includes(query) ||
-        item.address.toLowerCase().includes(query) ||
+        item.name.toLowerCase().includes(query.toLowerCase()) ||
+        item.address.toLowerCase().includes(query.toLowerCase()) ||
         item.cuisine.find((con: string) =>
           con.toLowerCase().includes(query.toLowerCase()),
         )
